@@ -21,23 +21,22 @@ void LagTester::gamepadReadHarness(int sampleCount) {
     gamepad->read();
     printTime(micros() - start_timer);
   }
+  Serial.println();
 }
 
 void LagTester::runStandardHarness(int sampleCount) {
   gamepadReadHarness(64);
 
-  runFixedHarness(sampleCount, 1);
-  runFixedHarness(sampleCount, 4);
-  runFixedHarness(sampleCount, 16);
-  runFixedHarness(sampleCount, 64);
-  runFixedHarness(sampleCount, 125);
-  runFixedHarness(sampleCount, 500);
-  runFixedHarness(sampleCount, 1000);
+  runFixedHarness(1000, 1);
+  runFixedHarness(1000, 4);
+  runFixedHarness(1000, 16);
+  runFixedHarness(1000, 64);
+  runFixedHarness(1000, 125);
+  runFixedHarness(400, 500);
+  runFixedHarness(200, 1000);
   
-  runRandomHarness(sampleCount, 150, 300);
-  runRandomHarness(sampleCount, 500, 1000);
-  runRandomHarness(sampleCount, 400, 1200);
-  runRandomHarness(sampleCount, 250, 1500);
+  runRandomHarness(250, 400, 1200);
+  runRandomHarness(250, 250, 1500);
 }
 
 void LagTester::runFixedHarness(int sampleCount, int delayms) {
@@ -70,16 +69,18 @@ void LagTester::runRandomHarness(int sampleCount, int mindelayms, int maxdelayms
   Serial.print(gamepad->buttonLabel(vplayer->buttonUnderTest()));
   Serial.print(");");
   runButtonPressedRandomHarness(sampleCount, mindelayms, maxdelayms);
+  Serial.println();
 
   Serial.print("random(");
   Serial.print(mindelayms);
   Serial.print(",");
   Serial.print(maxdelayms);
   Serial.print(");");
-  Serial.print("press(");
+  Serial.print("release(");
   Serial.print(gamepad->buttonLabel(vplayer->buttonUnderTest()));
   Serial.print(");");
   runButtonReleasedRandomHarness(sampleCount, mindelayms, maxdelayms);
+  Serial.println();
 }
 
 void LagTester::runButtonPressedHarness(int sampleCount, int delayms) {
